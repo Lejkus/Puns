@@ -1,12 +1,14 @@
 import react, { useMemo, useState } from "react";
 import "../styles/board.css";
-import { colors } from "../components/colors";
+import { colors } from "../constants/colors";
 import Chat from "../components/Chat";
 import Timer from "../components/Timer";
+import { topics, getRandomTopic } from "../constants/topics";
 
 function Game() {
   const [board, setBoard] = useState([]);
   const [activeColor, setActiveColor] = useState("red");
+  const [topic, settopic] = useState(() => getRandomTopic(topics));
 
   useMemo(() => {
     for (let i = 0; i < 630; i++) {
@@ -34,6 +36,7 @@ function Game() {
   return (
     <div className="game-chat-container">
       <div className="game">
+        <h1>Draw: {topic}</h1>
         <div className="board">
           <div></div>
           {board.map((color, index) => {
@@ -67,7 +70,7 @@ function Game() {
         </div>
         <button onClick={handleResetBoard}>Reset</button>
 
-        <Timer time={60}/>
+        <Timer time={60} />
       </div>
       <Chat />
     </div>

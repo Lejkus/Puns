@@ -5,6 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import { useState } from "react";
 import { UserContext } from "./context/User";
 import Timer from "./components/Timer";
+import WaitPage from "./pages/WaitPage";
 
 function App() {
   const [userInfo, setUserInfo] = useState({ logged: false });
@@ -15,8 +16,8 @@ function App() {
           <Route exact path="/">
             {userInfo.logged ? <Game /> : <Join />}
           </Route>
-          <Route exact path="/t">
-            <Timer time={30}/>
+          <Route exact path="/waiting">
+            {userInfo.logged ? <WaitPage /> : <Join />}
           </Route>
         </Switch>
       </div>

@@ -7,6 +7,7 @@ var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 
+
 mongoose.connect(
   "mongodb+srv://brad1234:1234@store.okm5n2u.mongodb.net/kalambury",
   {
@@ -32,8 +33,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(__dirname + "/views"));
 
-// var index = require("./routes/index");
-// app.use("/", index);
+var index = require("./routes/index");
+app.use("/", index);
 
 //------------------io
 const io = require("socket.io")(8000, {
@@ -54,6 +55,10 @@ io.on("connection", (socket) => {
     console.log(room, user, "joined");
     io.in(room).emit("receive-message", user + " " + "joined");
   });
+
+  socket.on("start-game",(room)=>{
+    io.in(room).emit("game-started")
+  })
 
   socket.on("disconnect", (reason) => {
     socket.disconnect();
