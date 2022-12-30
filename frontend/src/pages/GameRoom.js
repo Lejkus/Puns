@@ -1,20 +1,46 @@
-import react, { useMemo, useState } from "react";
-import "../styles/board.css";
+import react, { useContext, useEffect, useMemo, useState } from "react";
+import "../styles/board.scss";
 import { colors } from "../constants/colors";
 import Chat from "../components/Chat";
 import Timer from "../components/Timer";
 import { topics, getRandomTopic } from "../constants/topics";
+import { useHistory } from "react-router-dom";
+import { socket } from "../context/socket";
+import axios from "axios";
+import { UserContext } from "../context/User";
 
 function Game() {
   const [board, setBoard] = useState([]);
   const [activeColor, setActiveColor] = useState("red");
-  const [topic, settopic] = useState(() => getRandomTopic(topics));
+  const [topic, setTopic] = useState(() => getRandomTopic(topics));
+  const history = useHistory();
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const [koniec, setKoniec] = useState(false);
 
   useMemo(() => {
     for (let i = 0; i < 630; i++) {
       board.push("snow");
     }
   }, []);
+
+  setTimeout(() => setKoniec(true), 10000);
+
+  const drawEnd = async (userInfo) => {
+    const data = {
+      room: userInfo.room,
+      games: [
+        {
+          user: userInfo.name,
+          topic: topic,
+          game: board,
+        },
+      ],
+    };
+    await axios
+      .put(`http://localhost:5000/enddraw`, data)
+      .then(setUserInfo({ logged: false }))
+      .then(history.push("/"));
+  };
 
   const handleResetBoard = () => {
     setBoard([...board.map((color, index) => (board[index] = "snow"))]);
@@ -32,6 +58,13 @@ function Game() {
       ),
     ]);
   };
+
+
+  useEffect(() => {
+    if (koniec) {
+      drawEnd(userInfo);
+    }
+  }, [koniec]);
 
   return (
     <div className="game-chat-container">
@@ -69,6 +102,7 @@ function Game() {
           })}
         </div>
         <button onClick={handleResetBoard}>Reset</button>
+        {/* <button onClick={() => drawEnd(userInfo)}>End</button> */}
 
         <Timer time={60} />
       </div>

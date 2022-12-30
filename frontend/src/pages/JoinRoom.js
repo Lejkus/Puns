@@ -27,7 +27,7 @@ function Join() {
 
   const SendDataToJoin = () => {
     socket.emit("join-room", roomText, nameText);
-    history.push("/waiting");
+    history.push("/wait");
     setUserInfo({ room: roomText, name: nameText, logged: true });
   };
 
