@@ -1,5 +1,5 @@
 import react, { useContext, useEffect, useMemo, useState } from "react";
-import "../styles/board.scss";
+import "../styles/gameroom.scss";
 import { colors } from "../constants/colors";
 import Chat from "../components/Chat";
 import Timer from "../components/Timer";
@@ -11,7 +11,7 @@ import { UserContext } from "../context/User";
 
 function Game() {
   const [board, setBoard] = useState([]);
-  const [activeColor, setActiveColor] = useState("red");
+  const [activeColor, setActiveColor] = useState("snow");
   const [topic, setTopic] = useState(() => getRandomTopic(topics));
   const history = useHistory();
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -59,7 +59,6 @@ function Game() {
     ]);
   };
 
-
   useEffect(() => {
     if (koniec) {
       drawEnd(userInfo);
@@ -69,7 +68,11 @@ function Game() {
   return (
     <div className="game-chat-container">
       <div className="game">
-        <h1>Draw: {topic}</h1>
+        <div className="title-timer-container">
+          <h1>Draw: {topic}</h1>
+          <Timer time={60} />
+        </div>
+
         <div className="board">
           <div></div>
           {board.map((color, index) => {
@@ -101,12 +104,15 @@ function Game() {
             );
           })}
         </div>
-        <button onClick={handleResetBoard}>Reset</button>
-        {/* <button onClick={() => drawEnd(userInfo)}>End</button> */}
 
-        <Timer time={60} />
+        <button className="button-24" role="button" onClick={handleResetBoard}>
+          Reset
+        </button>
+        {/* <button onClick={() => drawEnd(userInfo)}>End</button> */}
       </div>
-      <Chat />
+      <div className="chat-container">
+        <Chat />
+      </div>
     </div>
   );
 }

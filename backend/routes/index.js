@@ -46,7 +46,6 @@ router.put("/startgame", function (req, res, next) {
 });
 
 router.put("/enddraw", function (req, res, next) {
-  console.log(req.body.games[0].game);
   Game.findOneAndUpdate(
     { room: req.body.room },
     {
@@ -62,7 +61,7 @@ router.put("/enddraw", function (req, res, next) {
     },
     function (err, data) {
       if (data) {
-        res.send({ Success: "gameStarted" });
+        res.send({ Success: "end" });
       } else {
         res.send({ Success: err });
       }

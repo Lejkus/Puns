@@ -1,5 +1,11 @@
+$color-1: #FAF7F0;
+$color-2: #CDFCF6;
+$color-3: #BCCEF8;
+$color-4: #98A8F8;
+$color-5: #282d41;
+
 body{
-  background-color: gray;
+  background-color: #FAF7F0;
 }
 .board{
   width: 900px;
@@ -12,12 +18,23 @@ body{
   width: 30px;
   height: 30px;
 }
+.title-timer-container{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
 
 .colorpalette{
   width: 900px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between
+}
+.game{
+  margin: 50px;
+  h1{
+    color:$color-5 ;
+  }
 }
 
 .single-color-box{
@@ -31,12 +48,11 @@ body{
 }
 }
 
-.chat{
-  background-color: aqua;
-  
-}
-
 .game-chat-container{
   display: flex;
   justify-content: space-around
+}
+.chat-container{
+  margin-top: 100px;
+  height: 100vh;
 }

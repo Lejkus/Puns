@@ -45,15 +45,13 @@ const io = require("socket.io")(8000, {
 
 io.on("connection", (socket) => {
 
-  socket.on("send-message", (room, message) => {
-    //console.log(socket.rooms);
-    io.in(room).emit("receive-message", message );
+  socket.on("send-message", (room, message, user) => {
+    io.in(room).emit("receive-message", message ,user );
   });
 
   socket.on("join-room", (room, user) => {
     socket.join(room);
-    console.log(room, user, "joined");
-    io.in(room).emit("receive-message", user + " " + "joined");
+    io.in(room).emit("receive-message", "joined",user);
   });
 
   socket.on("start-game",(room)=>{

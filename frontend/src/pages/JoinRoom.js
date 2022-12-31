@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { socket } from "../context/socket";
 import { UserContext } from "../context/User";
 import axios from "axios";
+import "../styles/joinroom.scss";
 
 function Join() {
   const history = useHistory();
@@ -42,22 +43,41 @@ function Join() {
   };
 
   return (
-    <div>
-      <label>Imie</label>
-      <input
-        onChange={(e) => {
-          setNameText(e.target.value);
-        }}
-        placeholder="Enter Text"
-      />
-      <label>Pokuj</label>
-      <input
-        onChange={(e) => {
-          setRoomText(e.target.value);
-        }}
-        placeholder="Enter Text"
-      />
-      <button onClick={() => handleJoin()}>Dołącz</button>
+    <div className="join-room">
+      <div className="login-form" >
+        <div className="flex-row">
+          <label className="lf--label" htmlFor="username">
+            <svg x="0px" y="0px" width="12px" height="13px"></svg>
+          </label>
+          <input
+            id="username"
+            className="lf--input"
+            placeholder="name"
+            type="text"
+            onChange={(e) => {
+              setNameText(e.target.value);
+            }}
+          ></input>
+        </div>
+        <div className="flex-row">
+          <label className="lf--label" htmlFor="password">
+            <svg x="0px" y="0px" width="15px" height="5px">
+              <g></g>
+            </svg>
+          </label>
+          <input
+          
+            id="password"
+            className="lf--input"
+            placeholder="room"
+            type="text"
+            onChange={(e) => {
+              setRoomText(e.target.value);
+            }}
+          ></input>
+        </div>
+        <button className="lf--submit" onClick={() => handleJoin()}>Dołącz</button>
+      </div>
     </div>
   );
 }

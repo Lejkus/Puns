@@ -59,11 +59,7 @@ export default function Timer({ time }) {
     return deadline;
   };
 
-  // We can use useEffect so that when the component
-  // mount the timer will start as soon as possible
 
-  // We put empty array to act as componentDid
-  // mount only
   useEffect(() => {
     clearTimer(getDeadTime());
   }, []);

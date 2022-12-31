@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { socket } from "../context/socket";
 import { UserContext } from "../context/User";
 import axios from "axios";
+import "../styles/waitroom.scss";
 
 function WaitPage() {
   const history = useHistory();
@@ -13,7 +14,7 @@ function WaitPage() {
 
   socket.on("game-started", () => {
     setStart(true);
-    setTimeout(() => history.push("/"), 1000);
+    setTimeout(() => history.push("/"), 10000);
   });
 
   const HandleStartGame = () => {
@@ -36,9 +37,11 @@ function WaitPage() {
   };
 
   return (
-    <div>
+    <div className="wait-room">
       <Chat />
-      <button onClick={() => HandleStartGame()}>Start</button>
+      <button className="button-24" role="button" onClick={() => HandleStartGame()}>
+        Start
+      </button>
       {start ? <Timer time={10} /> : <></>}
     </div>
   );
