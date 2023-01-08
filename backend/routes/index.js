@@ -69,10 +69,20 @@ router.put("/enddraw", function (req, res, next) {
   );
 });
 
+router.post("/startquess", function (req, res, next) {
+  Game.findOne({ room: req.body.room }, function (err, data) {
+    if(data){
+      res.send(data.games);
+    }else{
+      res.send({ Success: "ERROR" })
+    }
+    
+  });
+});
+
 router.put("/endgame", function (req, res, next) {
-  Game.findOneAndUpdate(
+  Game.deleteOne(
     { room: req.body.room },
-    { $set: { started: false } },
     function (err, data) {
       if (data) {
         res.send({ Success: "gameEnded" });

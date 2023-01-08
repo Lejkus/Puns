@@ -6,7 +6,7 @@ import { useState } from "react";
 import { UserContext } from "./context/User";
 import Timer from "./components/Timer";
 import WaitPage from "./pages/WaitRoom";
-
+import GuessRoom from "./pages/GuessRoom"
 
 function App() {
   const [userInfo, setUserInfo] = useState({ logged: false });
@@ -21,7 +21,7 @@ function App() {
             {userInfo.logged ? <WaitPage /> : <Join />}
           </Route>
           <Route exact path="/guess">
-            {userInfo.logged ? <WaitPage /> : <Join />}
+            {userInfo.logged ? <GuessRoom /> : <Join />}
           </Route>
         </Switch>
       </div>

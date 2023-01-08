@@ -14,7 +14,7 @@ function WaitPage() {
 
   socket.on("game-started", () => {
     setStart(true);
-    setTimeout(() => history.push("/"), 10000);
+    setTimeout(() => history.push("/"), 1000);
   });
 
   const HandleStartGame = () => {

@@ -8,6 +8,7 @@ body{
   background-color: #FAF7F0;
 }
 .board{
+  min-width: 900px;
   width: 900px;
   height: 630px;
   display: flex;
@@ -56,3 +57,28 @@ body{
   margin-top: 100px;
   height: 100vh;
 }
+
+
+
+.input-color-container {
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid #D4D9E2;
+  // border: solid 2px #ddd;
+  // border-radius: 40px;
+}
+.input-color {
+  appearance: none;
+  background: transparent;
+  border: none;
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+  
+}
+.input-color::-webkit-color-swatch {
+      border-radius: 50%;
+      border: none;
+  }

@@ -23,7 +23,7 @@ function Game() {
     }
   }, []);
 
-  setTimeout(() => setKoniec(true), 10000);
+  setTimeout(() => setKoniec(true), 5000);
 
   const drawEnd = async (userInfo) => {
     const data = {
@@ -38,8 +38,7 @@ function Game() {
     };
     await axios
       .put(`http://localhost:5000/enddraw`, data)
-      .then(setUserInfo({ logged: false }))
-      .then(history.push("/"));
+      .then(history.push("/guess"));
   };
 
   const handleResetBoard = () => {
@@ -72,6 +71,10 @@ function Game() {
           <h1>Draw: {topic}</h1>
           <Timer time={60} />
         </div>
+        <div className="input-color-container">
+          <input className="input-color"  type='color' value={activeColor} onChange={e=> setActiveColor(e.target.value)}></input>
+        </div>
+    
 
         <div className="board">
           <div></div>

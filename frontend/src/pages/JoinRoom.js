@@ -27,8 +27,8 @@ function Join() {
   };
 
   const SendDataToJoin = () => {
-    socket.emit("join-room", roomText, nameText);
     history.push("/wait");
+    socket.emit("join-room", roomText, nameText);
     setUserInfo({ room: roomText, name: nameText, logged: true });
   };
 
@@ -76,7 +76,7 @@ function Join() {
             }}
           ></input>
         </div>
-        <button className="lf--submit" onClick={() => handleJoin()}>Dołącz</button>
+        <button className="lf--submit" onClick={() => handleJoin()}>Join</button>
       </div>
     </div>
   );
