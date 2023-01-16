@@ -8,6 +8,8 @@ function Chat({ active_game }) {
   const [message, SetMessage] = useState("");
   const { userInfo, setUserInfo } = useContext(UserContext);
 
+  const [game, setgame] = useState()
+
   socket.off("receive-message").on("receive-message", (message, username) => {
     console.log("odebrano wiadomość:", message, username);
     SetMessages((messages) => [
@@ -18,15 +20,22 @@ function Chat({ active_game }) {
 
   const handleSendMessage = () => {
     if (active_game) {
-      if (message == active_game.topic) {
+      if (message == active_game.topic && game!=active_game._id) {
         alert("tak!");
-        socket.emit("send-message", userInfo.room, "Zgadł", userInfo.name);
-      } else {
-        socket.emit("send-message", userInfo.room, message, userInfo.name);
+        setgame(active_game._id)
+        socket.emit('add-point',userInfo.room,userInfo.username)
+        socket.emit("send-message", userInfo.room, "guessed!", userInfo.username);
+        SetMessage("");
+      } 
+      else if (message == active_game.topic && game==active_game._id) {
+        alert("już zgadłeś");
+      }
+      else {
+        socket.emit("send-message", userInfo.room, message, userInfo.username);
         SetMessage("");
       }
     } else {
-      socket.emit("send-message", userInfo.room, message, userInfo.name);
+      socket.emit("send-message", userInfo.room, message, userInfo.username);
       SetMessage("");
     }
   };

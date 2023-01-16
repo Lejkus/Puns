@@ -6,7 +6,9 @@ gameSchema = new Schema({
   started: Boolean,
   games: [
     {
-      user: String,
+      //user: {},
+      userid:Number,
+      points:Number,
       topic: String,
       game: Array,
     },

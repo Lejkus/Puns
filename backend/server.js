@@ -1,13 +1,11 @@
 var express = require("express");
 var env = require("dotenv").config();
-var ejs = require("ejs");
-var path = require("path");
 var cors = require("cors");
 var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 
-
+//----mongodb
 mongoose.connect(
   "mongodb+srv://brad1234:1234@store.okm5n2u.mongodb.net/kalambury",
   {
@@ -25,16 +23,16 @@ mongoose.connect(
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {});
+//----mongodb
+
 
 app.use(cors());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(express.static(__dirname + "/views"));
 
-var index = require("./routes/index");
-app.use("/", index);
+app.use("/", require("./routes/game"));
+app.use("/user", require("./routes/user"));
 
 //------------------io
 const io = require("socket.io")(8000, {
@@ -58,6 +56,18 @@ io.on("connection", (socket) => {
     io.in(room).emit("game-started")
   })
 
+  socket.on('start-quess',(room,user)=>{
+    io.in(room).emit('quess',user)
+  })
+
+  socket.on('add-point',(room,user)=>{
+    io.in(room).emit('adding-point',user)
+  })
+
+  socket.on("leave-room",(room)=>{
+    socket.leave(room);
+    console.log('leave room:' + room);
+  })
 
   socket.on("disconnect", (reason) => {
     socket.disconnect();

@@ -1,23 +1,23 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
 import { socket } from "../context/socket";
 import { UserContext } from "../context/User";
+import { ActivePageContext } from "../context/ActivePage";
 import axios from "axios";
 import "../styles/joinroom.scss";
 
 function Join() {
-  const history = useHistory();
-  const [nameText, setNameText] = useState("");
-  const [roomText, setRoomText] = useState("");
-
+  //context
+  const { setActivePage } = useContext(ActivePageContext);
   const { userInfo, setUserInfo } = useContext(UserContext);
+
+  const [roomText, setRoomText] = useState("");
 
   socket.on("connect", () => {
     console.log("connected with id: " + socket.id);
   });
 
   const handleJoin = () => {
-    if (roomText !== "" && nameText !== "") {
+    if (roomText !== "") {
       return new Promise((resolve, reject) => {
         FindGame({ room: roomText });
       });
@@ -27,9 +27,13 @@ function Join() {
   };
 
   const SendDataToJoin = () => {
-    history.push("/wait");
-    socket.emit("join-room", roomText, nameText);
-    setUserInfo({ room: roomText, name: nameText, logged: true });
+    setActivePage("WaitPage");
+    //history.push("/wait");
+    socket.emit("join-room", roomText, userInfo.username);
+    setUserInfo((userInfo) => ({
+      ...userInfo,
+      room: roomText,
+    }));
   };
 
   const FindGame = async (data) => {
@@ -44,19 +48,17 @@ function Join() {
 
   return (
     <div className="join-room">
-      <div className="login-form" >
+      <div className="login-form">
         <div className="flex-row">
           <label className="lf--label" htmlFor="username">
             <svg x="0px" y="0px" width="12px" height="13px"></svg>
           </label>
+
           <input
-            id="username"
-            className="lf--input"
-            placeholder="name"
+            className="lf--input username-input"
             type="text"
-            onChange={(e) => {
-              setNameText(e.target.value);
-            }}
+            value={"Login as : " + userInfo.username}
+            disabled
           ></input>
         </div>
         <div className="flex-row">
@@ -66,7 +68,6 @@ function Join() {
             </svg>
           </label>
           <input
-          
             id="password"
             className="lf--input"
             placeholder="room"
@@ -76,7 +77,9 @@ function Join() {
             }}
           ></input>
         </div>
-        <button className="lf--submit" onClick={() => handleJoin()}>Join</button>
+        <button className="lf--submit" onClick={() => handleJoin()}>
+          Join
+        </button>
       </div>
     </div>
   );

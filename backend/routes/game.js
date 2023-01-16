@@ -52,13 +52,25 @@ router.put("/enddraw", function (req, res, next) {
       $push: {
         games: [
           {
-            user: req.body.games[0].user,
+            username: req.body.games[0].user,
+            points: 0,
             topic: req.body.games[0].topic,
             game: req.body.games[0].game,
           },
         ],
       },
     },
+    //{
+    //   $push: {
+    //     games: [
+    //       {
+    //         user: { username: req.body.games[0].user, points: 0, id: "21" },
+    //         topic: req.body.games[0].topic,
+    //         game: req.body.games[0].game,
+    //       },
+    //     ],
+    //   },
+    // },
     function (err, data) {
       if (data) {
         res.send({ Success: "end" });
@@ -71,26 +83,22 @@ router.put("/enddraw", function (req, res, next) {
 
 router.post("/startquess", function (req, res, next) {
   Game.findOne({ room: req.body.room }, function (err, data) {
-    if(data){
+    if (data) {
       res.send(data.games);
-    }else{
-      res.send({ Success: "ERROR" })
+    } else {
+      res.send({ Success: "ERROR" });
     }
-    
   });
 });
 
 router.put("/endgame", function (req, res, next) {
-  Game.deleteOne(
-    { room: req.body.room },
-    function (err, data) {
-      if (data) {
-        res.send({ Success: "gameEnded" });
-      } else {
-        res.send({ Success: err });
-      }
+  Game.deleteOne({ room: req.body.room }, function (err, data) {
+    if (data) {
+      res.send({ Success: "gameEnded" });
+    } else {
+      res.send({ Success: err });
     }
-  );
+  });
 });
 
 module.exports = router;

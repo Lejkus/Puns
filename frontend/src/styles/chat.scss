@@ -79,8 +79,9 @@ a {
 //** form
 .form {	
 	&__field {
+		margin-bottom: 20px;
 		width: 360px;
-    border-radius: 10px;
+    	border-radius: 10px;
 		background: #fff;
 		color: $color-4;
 		font: inherit;

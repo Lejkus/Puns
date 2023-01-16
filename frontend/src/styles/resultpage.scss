@@ -1,0 +1,61 @@
+$color-1: #FAF7F0;
+$color-2: #CDFCF6;
+$color-3: #BCCEF8;
+$color-4: #98A8F8;
+$color-5: #282d41;
+
+
+.results-page{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-1{
+    width: 400px;
+    height: 150px;
+    border: #282d41 solid 2px;
+    border-radius: 20px;
+    background-color: gold;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+.result-2{
+    margin-top: 10px;
+    width: 400px;
+    height: 150px;
+    border: #282d41 solid 2px;
+    border-radius: 20px;
+    background-color: silver;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+.result-3{
+    margin-top: 10px;
+    width: 400px;
+    height: 150px;
+    border: #282d41 solid 2px;
+    border-radius: 20px;
+    background-color: rgb(223, 174, 109);
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+.result{
+    margin-top: 40px;
+    width: 400px;
+    height: 150px;
+    border: #282d41 solid 2px;
+    border-radius: 20px;
+    background-color: rgb(173, 173, 173);
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}

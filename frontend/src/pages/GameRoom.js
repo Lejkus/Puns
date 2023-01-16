@@ -1,21 +1,22 @@
-import react, { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import "../styles/gameroom.scss";
 import { colors } from "../constants/colors";
 import Chat from "../components/Chat";
 import Timer from "../components/Timer";
 import { topics, getRandomTopic } from "../constants/topics";
-import { useHistory } from "react-router-dom";
-import { socket } from "../context/socket";
 import axios from "axios";
 import { UserContext } from "../context/User";
+import { ActivePageContext } from "../context/ActivePage";
 
 function Game() {
+  //context
+  const { userInfo } = useContext(UserContext);
+  const { setActivePage } = useContext(ActivePageContext);
+
   const [board, setBoard] = useState([]);
   const [activeColor, setActiveColor] = useState("snow");
-  const [topic, setTopic] = useState(() => getRandomTopic(topics));
-  const history = useHistory();
-  const { userInfo, setUserInfo } = useContext(UserContext);
-  const [koniec, setKoniec] = useState(false);
+  const [topic] = useState(() => getRandomTopic(topics));
+  const [end, setEnd] = useState(false);
 
   useMemo(() => {
     for (let i = 0; i < 630; i++) {
@@ -23,14 +24,14 @@ function Game() {
     }
   }, []);
 
-  setTimeout(() => setKoniec(true), 5000);
+  setTimeout(() => setEnd(true), 5000);
 
   const drawEnd = async (userInfo) => {
     const data = {
       room: userInfo.room,
       games: [
         {
-          user: userInfo.name,
+          user: userInfo._id,
           topic: topic,
           game: board,
         },
@@ -38,7 +39,7 @@ function Game() {
     };
     await axios
       .put(`http://localhost:5000/enddraw`, data)
-      .then(history.push("/guess"));
+      .then(setActivePage("QuessPage"));
   };
 
   const handleResetBoard = () => {
@@ -47,7 +48,6 @@ function Game() {
 
   const hangeColorChange = (color) => {
     setActiveColor(color);
-    console.log(activeColor);
   };
 
   const hangePaint = (number) => {
@@ -59,10 +59,10 @@ function Game() {
   };
 
   useEffect(() => {
-    if (koniec) {
+    if (end) {
       drawEnd(userInfo);
     }
-  }, [koniec]);
+  }, [end]);
 
   return (
     <div className="game-chat-container">
@@ -72,9 +72,13 @@ function Game() {
           <Timer time={60} />
         </div>
         <div className="input-color-container">
-          <input className="input-color"  type='color' value={activeColor} onChange={e=> setActiveColor(e.target.value)}></input>
+          <input
+            className="input-color"
+            type="color"
+            value={activeColor}
+            onChange={(e) => setActiveColor(e.target.value)}
+          ></input>
         </div>
-    
 
         <div className="board">
           <div></div>
