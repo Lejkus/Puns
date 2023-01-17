@@ -60,7 +60,7 @@ function QuessRoom() {
         socket.emit("leave-room", userInfo.room);
         setActivePage("ResultsPage");
       }
-    }, 505000);
+    }, 5000);
   }
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function QuessRoom() {
 
   return (
     <div className="guess-room">
-      <div className="timer-board-result"> 
+      <div className="timer-board-result">
         {timer}
         {active_game ? (
           <div className="board quess">
@@ -83,26 +83,31 @@ function QuessRoom() {
             })}
           </div>
         ) : (
-          <Timer time={3} />
+          <div className="timerboard">
+            <Timer time={3} />
+            <div className="board quess">
+              
+            </div>
+          </div>
         )}
         {results_array ? (
-        <div className="results">
-          {results_array.map((user, index) => {
-            return (
-              <div className="result-quess" key={index}>
-                <div className="result-name">
-                  <h2>{user.name}</h2>
+          <div className="results">
+            {results_array.map((user, index) => {
+              return (
+                <div className="result-quess" key={index}>
+                  <div className="result-name">
+                    <h2>{user.name}</h2>
+                  </div>
+                  <div className="result-points">
+                    <h2>{user.points}</h2>
+                  </div>
                 </div>
-                <div className="result-points">
-                  <h2>{user.points}</h2>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <></>
-      )}
+              );
+            })}
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       <Chat active_game={active_game} />
     </div>

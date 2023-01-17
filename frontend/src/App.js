@@ -11,7 +11,9 @@ import { Beforeunload } from "react-beforeunload";
 import axios from "axios";
 import Register from "./pages/RegisterPage";
 import ResultsPage from "./pages/ResultsPage";
-import {ResultsArray} from './context/ResultsArray'
+import { ResultsArray } from "./context/ResultsArray";
+import ProfilePage from "./pages/ProfilePage";
+import NavbarComponent from "./components/Navbar";
 
 
 function App() {
@@ -49,11 +51,16 @@ function App() {
             <div className="App">
               <Switch>
                 <Route exact path="/">
+                  <NavbarComponent />
                   {userInfo ? redirectToPage(ActivePage) : <Login />}
                 </Route>
-
                 <Route path="/register">
+                  <NavbarComponent />
                   <Register />
+                </Route>
+                <Route path="/profile">
+                  <NavbarComponent />
+                  {userInfo ? <ProfilePage user={userInfo} /> : <Login />}
                 </Route>
               </Switch>
             </div>

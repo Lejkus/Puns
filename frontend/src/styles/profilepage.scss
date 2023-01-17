@@ -1,0 +1,46 @@
+$color-1: #FAF7F0;
+$color-2: #CDFCF6;
+$color-3: #BCCEF8;
+$color-4: #98A8F8;
+$color-5: #282d41;
+
+.ProfilePage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h1{
+        color:$color-5 ;
+        ont-weight: bold;
+    }
+}
+
+.stats-container{
+    min-width: 600px;
+    min-height: 500px;
+    background-color:$color-3 ;
+    padding: 70px;
+    box-shadow: inset -0px 0px 10px 0px $color-4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    .stats-div{
+        color:white;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 70%;
+        padding: 10px;
+        font-weight: bold;
+        box-shadow: inset 0px 0px 1px 0px rgba(66, 68, 90, 1);
+        p{
+           font-size: 30px; 
+        }
+        .p{
+            font-weight: bold;
+            color: $color-2;
+        }
+        
+    }
+}
+

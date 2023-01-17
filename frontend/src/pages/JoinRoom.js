@@ -12,6 +12,8 @@ function Join() {
 
   const [roomText, setRoomText] = useState("");
 
+  console.log(userInfo);
+
   socket.on("connect", () => {
     console.log("connected with id: " + socket.id);
   });

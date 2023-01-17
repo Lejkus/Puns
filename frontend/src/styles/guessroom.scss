@@ -11,8 +11,8 @@ $color-5: #282d41;
 }
 
 .quess{
-    border: 3px solid black;
-}
+    border: $color-5 2px solid;
+  }
 
 
 .timer-board-result{
@@ -43,7 +43,5 @@ $color-5: #282d41;
                     background-color: $color-2;
                 }
         } 
-    }
-    
-    
+    } 
 }

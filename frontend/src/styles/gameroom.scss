@@ -13,6 +13,7 @@ body{
   height: 630px;
   display: flex;
   flex-wrap: wrap;
+  border: $color-5 2px solid;
 }
 
 .single-box{
@@ -82,3 +83,5 @@ body{
       border-radius: 50%;
       border: none;
   }
+
+

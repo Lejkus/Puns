@@ -58,7 +58,7 @@ function ResultsPage() {
 
   return (
     <div className="results-page">
-      <button
+      <button className="btn btn--primary  "
         onClick={() => {
           reset();
         }}

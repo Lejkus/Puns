@@ -20,7 +20,7 @@ function Game() {
 
   useMemo(() => {
     for (let i = 0; i < 630; i++) {
-      board.push("snow");
+      board.push("#fffafa");
     }
   }, []);
 
