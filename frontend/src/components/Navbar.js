@@ -1,10 +1,31 @@
 import "../styles/navbar.scss";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/User";
+import { SeachUserContext } from "../context/SeachUser";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function NavbarComponent() {
   const { userInfo } = useContext(UserContext);
+  const { SeachUserInfo, setSeachUserInfo } = useContext(SeachUserContext);
+  const [text, setText] = useState("");
+
+  const history = useHistory();
+
+  const FindUser = async () => {
+    await axios
+      .post(`http://localhost:5000/user/profile`, { username: text })
+      .then((response) => {
+        if (response.data) {
+          setSeachUserInfo(response.data);
+          history.push("/profile");
+        } else {
+          alert("No find user");
+        }
+      });
+  };
+
   useEffect(() => {
     const nav = document.querySelector(".nav"),
       searchIcon = document.querySelector("#searchIcon"),
@@ -29,7 +50,7 @@ function NavbarComponent() {
     navCloseBtn.addEventListener("click", () => {
       nav.classList.remove("openNav");
     });
-  },[]);
+  }, []);
 
   return (
     <>
@@ -46,11 +67,7 @@ function NavbarComponent() {
         <ul className="nav-links">
           <i className="uil uil-times navCloseBtn"></i>
           <li>
-            {userInfo ? (
-              <Link to="/profile">Profile</Link>
-            ) : (
-              <Link to="/">Profile</Link>
-            )}
+            <Link to="/profile">Profile</Link>
           </li>
           <li>
             <Link to="/register">Register</Link>
@@ -60,10 +77,27 @@ function NavbarComponent() {
           </li>
         </ul>
 
-        <i className="uil uil-search search-icon" id="searchIcon"></i>
+        <i
+          className="uil uil-search search-icon"
+          id="searchIcon"
+          onClick={() => {
+            setSeachUserInfo("");
+          }}
+        ></i>
         <div className="search-box">
-          <i className="uil uil-search search-icon"></i>
-          <input type="text" placeholder="Search user..." />
+          <i
+            onClick={() => {
+              FindUser();
+            }}
+            className="uil uil-search search-icon"
+          ></i>
+          <input
+            type="text"
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+            placeholder="Search user..."
+          />
         </div>
       </nav>
     </>

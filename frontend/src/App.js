@@ -14,10 +14,11 @@ import ResultsPage from "./pages/ResultsPage";
 import { ResultsArray } from "./context/ResultsArray";
 import ProfilePage from "./pages/ProfilePage";
 import NavbarComponent from "./components/Navbar";
-
+import { SeachUserContext } from "./context/SeachUser";
 
 function App() {
   const [userInfo, setUserInfo] = useState();
+  const [SeachUserInfo, setSeachUserInfo] = useState();
   const [ActivePage, setActivePage] = useState();
   const [results_array, setResults_array] = useState([]);
 
@@ -45,28 +46,30 @@ function App() {
   }
   return (
     <Beforeunload onBeforeunload={() => UnnlogUser(userInfo)}>
-      <UserContext.Provider value={{ userInfo, setUserInfo }}>
-        <ActivePageContext.Provider value={{ ActivePage, setActivePage }}>
-          <ResultsArray.Provider value={{ results_array, setResults_array }}>
-            <div className="App">
-              <Switch>
-                <Route exact path="/">
-                  <NavbarComponent />
-                  {userInfo ? redirectToPage(ActivePage) : <Login />}
-                </Route>
-                <Route path="/register">
-                  <NavbarComponent />
-                  <Register />
-                </Route>
-                <Route path="/profile">
-                  <NavbarComponent />
-                  {userInfo ? <ProfilePage user={userInfo} /> : <Login />}
-                </Route>
-              </Switch>
-            </div>
-          </ResultsArray.Provider>
-        </ActivePageContext.Provider>
-      </UserContext.Provider>
+      <SeachUserContext.Provider value={{ SeachUserInfo, setSeachUserInfo }}>
+        <UserContext.Provider value={{ userInfo, setUserInfo }}>
+          <ActivePageContext.Provider value={{ ActivePage, setActivePage }}>
+            <ResultsArray.Provider value={{ results_array, setResults_array }}>
+              <div className="App">
+                <Switch>
+                  <Route exact path="/">
+                    <NavbarComponent />
+                    {userInfo ? redirectToPage(ActivePage) : <Login />}
+                  </Route>
+                  <Route path="/register">
+                    <NavbarComponent />
+                    <Register />
+                  </Route>
+                  <Route path="/profile">
+                    <NavbarComponent />
+                    {userInfo || SeachUserInfo ? <ProfilePage /> : <Login />}
+                  </Route>
+                </Switch>
+              </div>
+            </ResultsArray.Provider>
+          </ActivePageContext.Provider>
+        </UserContext.Provider>
+      </SeachUserContext.Provider>
     </Beforeunload>
   );
 }

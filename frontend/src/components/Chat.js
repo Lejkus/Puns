@@ -21,14 +21,14 @@ function Chat({ active_game }) {
   const handleSendMessage = () => {
     if (active_game) {
       if (message == active_game.topic && game!=active_game._id) {
-        alert("tak!");
+        alert("YES!");
         setgame(active_game._id)
         socket.emit('add-point',userInfo.room,userInfo.username)
         socket.emit("send-message", userInfo.room, "guessed!", userInfo.username);
         SetMessage("");
       } 
       else if (message == active_game.topic && game==active_game._id) {
-        alert("już zgadłeś");
+        alert("you already quess");
       }
       else {
         socket.emit("send-message", userInfo.room, message, userInfo.username);

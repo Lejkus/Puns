@@ -19,7 +19,6 @@ function QuessRoom() {
   const [timer, settimer] = useState();
 
   socket.off("quess").on("quess", (user) => {
-    console.log("robienie tablicy");
     setResults_array((results_array) => [
       ...results_array,
       { name: user, points: 0 },
@@ -41,7 +40,7 @@ function QuessRoom() {
     setTimeout(() => {
       axios.post(`http://localhost:5000/startquess`, data).then((response) => {
         displayGames(response.data);
-        settimer(<Timer time={response.data.length * 15} />);
+        settimer(<Timer time={response.data.length * 20} />);
         socket.emit("start-quess", userInfo.room, userInfo.username);
       });
     }, 3000);
@@ -60,7 +59,7 @@ function QuessRoom() {
         socket.emit("leave-room", userInfo.room);
         setActivePage("ResultsPage");
       }
-    }, 5000);
+    }, 20000);
   }
 
   useEffect(() => {

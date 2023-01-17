@@ -24,7 +24,7 @@ function Game() {
     }
   }, []);
 
-  setTimeout(() => setEnd(true), 5000);
+  setTimeout(() => setEnd(true), 60000);
 
   const drawEnd = async (userInfo) => {
     const data = {

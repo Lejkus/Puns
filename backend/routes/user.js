@@ -75,11 +75,11 @@ router.post("/login", function (req, res, next) {
 });
 
 router.post("/profile", function (req, res, next) {
-  User.findOne({ _id: req.body._id }, function (err, data) {
+  User.findOne({ username: req.body.username }, function (err, data) {
     if (data) {
       res.send(data);
     } else {
-      res.send({ Success: "This Id Is not regestered!" });
+      res.send();
     }
   });
 });

@@ -23,7 +23,8 @@ function ResultsPage() {
     let won = 0;
     let podium = 0;
 
-    results_array.reverse().map((user, index) => {
+    results_array.map((user, index) => {
+      console.log(user);
       if (user.name === userInfo.username) {
         if (index === 0) {
           won = 1;

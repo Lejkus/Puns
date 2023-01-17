@@ -24,7 +24,7 @@ function Join() {
         FindGame({ room: roomText });
       });
     } else {
-      alert("wypełnij pola");
+      alert("fill the inputs");
     }
   };
 
@@ -43,7 +43,7 @@ function Join() {
       if (response.data.Success !== "GameIsOn") {
         SendDataToJoin();
       } else {
-        alert("Gra trwa");
+        alert("Game is on");
       }
     });
   };
