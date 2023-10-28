@@ -1,4 +1,4 @@
-Easy online puns game using socket.io , mongodb , react, express
+Easy online puns game using socket.io , mongodb , react, with express api
 
 Little demo:
 
