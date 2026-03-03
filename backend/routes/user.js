@@ -12,30 +12,29 @@ router.post("/", function (req, res, next) {
     if (personInfo.password == personInfo.passwordConf) {
       User.findOne({ email: personInfo.email }, function (err, data) {
         if (!data) {
-          bcrypt
-            .hash(personInfo.password, 5)
-            .then(function (hash) {
-              return (newPerson = new User({
-                email: personInfo.email,
-                username: personInfo.username,
-                password: hash,
-                active: false,
-                stats: {
-                  points: 0,
-                  games_played: 0,
-                  won: 0,
-                  podiums: 0,
-                },
-              }));
-            })
-            .then((newPerson) => {
-              newPerson.save(function (err, Person) {
-                if (err) console.log(err);
-                else console.log("Success");
-              });
-            });
-
-          res.send({ Success: "You are regestered,You can login now." });
+          bcrypt.hash(personInfo.password, 5)
+  .then((hash) => {
+    const newPerson = new User({
+      email: personInfo.email.toLowerCase(), // zawsze lowercase
+      username: personInfo.username,
+      password: hash,
+      stats: {
+        points: 0,
+        games_played: 0,
+        won: 0,
+        podiums: 0,
+      },
+    });
+    return newPerson.save();
+  })
+  .then((savedUser) => {
+    console.log("User registered:", savedUser.email);
+    res.send({ Success: "You are registered, You can login now." });
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({ Error: "Error saving user" });
+  });
         } else {
           res.send({ Success: "Email is already used." });
         }
@@ -46,31 +45,17 @@ router.post("/", function (req, res, next) {
   }
 });
 
-router.post("/login", function (req, res, next) {
-  User.findOne({ email: req.body.email }, function (err, data) {
-    if (data) {
-      if (data.active) {
-        res.send({ Success: "You already active!" });
+router.post("/login", function (req, res) {
+  User.findOne({ email: req.body.email }, function (err, user) {
+    if (!user) return res.send({ Success: "This Email Is not registered!" });
+
+    bcrypt.compare(req.body.password, user.password).then((match) => {
+      if (match) {
+        res.send({ Success: "Loging succes!", userdata: user });
       } else {
-        bcrypt
-          .compare(req.body.password, data.password)
-          .then(function (result) {
-            if (result) {
-              User.findOneAndUpdate(
-                { email: req.body.email },
-                { $set: { active: true } },
-                () => {
-                  res.send({ Success: "Loging succes!", userdata: data });
-                }
-              );
-            } else {
-              res.send({ Success: "Wrong password!" });
-            }
-          });
+        res.send({ Success: "Wrong password!" });
       }
-    } else {
-      res.send({ Success: "This Email Is not regestered!" });
-    }
+    });
   });
 });
 
@@ -84,15 +69,6 @@ router.post("/profile", function (req, res, next) {
   });
 });
 
-router.put("/logout", function (req, res, next) {
-  User.findOneAndUpdate(
-    { _id: req.body._id },
-    { $set: { active: false } },
-    () => {
-      res.send({ Success: "logout!" });
-    }
-  );
-});
 
 router.put("/updatestats", function (req, res, next) {
   User.findOneAndUpdate(

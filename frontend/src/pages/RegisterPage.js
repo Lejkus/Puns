@@ -28,7 +28,7 @@ function Register() {
 
   const SendDataToRegister = async (data) => {
     await axios
-      .post(`http://localhost:5000/user`, data)
+      .post(`http://localhost:4000/user`, data)
       .then((response) => {
         if (response.data.Success === "You are regestered,You can login now.") {
           alert(response.data.Success);

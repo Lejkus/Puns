@@ -40,7 +40,7 @@ function ResultsPage() {
     );
 
     axios
-      .put(`http://localhost:5000/user/updatestats`, {
+      .put(`http://localhost:4000/user/updatestats`, {
         _id: userInfo._id,
         username: userInfo.username,
         stats: {

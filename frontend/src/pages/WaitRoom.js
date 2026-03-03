@@ -23,7 +23,7 @@ function WaitPage() {
 
   const StartGame = async (data) => {
     await axios
-      .put(`http://localhost:5000/startgame`, data)
+      .put(`http://localhost:4000/startgame`, data)
       .then((response) => {
         if (response.data.Success === "gameStarted") {
           socket.emit("start-game", userInfo.room);

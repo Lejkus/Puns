@@ -15,7 +15,7 @@ function NavbarComponent() {
 
   const FindUser = async () => {
     await axios
-      .post(`http://localhost:5000/user/profile`, { username: text })
+      .post(`http://localhost:4000/user/profile`, { username: text })
       .then((response) => {
         if (response.data) {
           setSeachUserInfo(response.data);

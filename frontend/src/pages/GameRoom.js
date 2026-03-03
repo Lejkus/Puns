@@ -38,7 +38,7 @@ function Game() {
       ],
     };
     await axios
-      .put(`http://localhost:5000/enddraw`, data)
+      .put(`http://localhost:4000/enddraw`, data)
       .then(setActivePage("QuessPage"));
   };
 

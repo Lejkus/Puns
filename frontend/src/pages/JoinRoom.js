@@ -39,7 +39,7 @@ function Join() {
   };
 
   const FindGame = async (data) => {
-    await axios.put(`http://localhost:5000/findgame`, data).then((response) => {
+    await axios.put(`http://localhost:4000/findgame`, data).then((response) => {
       if (response.data.Success !== "GameIsOn") {
         SendDataToJoin();
       } else {

@@ -38,7 +38,7 @@ function QuessRoom() {
 
   const getGames = async (data) => {
     setTimeout(() => {
-      axios.post(`http://localhost:5000/startquess`, data).then((response) => {
+      axios.post(`http://localhost:4000/startquess`, data).then((response) => {
         displayGames(response.data);
         settimer(<Timer time={response.data.length * 20} />);
         socket.emit("start-quess", userInfo.room, userInfo.username);
@@ -55,7 +55,7 @@ function QuessRoom() {
         number += 1;
       } else {
         clearInterval(timer);
-        axios.put(`http://localhost:5000/endgame`, { room: userInfo.room });
+        axios.put(`http://localhost:4000/endgame`, { room: userInfo.room });
         socket.emit("leave-room", userInfo.room);
         setActivePage("ResultsPage");
       }

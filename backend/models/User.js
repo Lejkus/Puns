@@ -6,7 +6,6 @@ var Schema = mongoose.Schema;
   email: String,
   username: String,
   password: String,
-  active: Boolean,
   stats: {
     points: Number,
     games_played: Number,

@@ -1,77 +1,74 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../context/User";
+import { ActivePageContext } from "../context/ActivePage";
 import axios from "axios";
 import "../styles/joinroom.scss";
-import { ActivePageContext } from "../context/ActivePage";
 
 function Login() {
-  //form
-  const [loginText, setLoginText] = useState("");
-  const [PasswordText, setPassword] = useState("");
-  //context
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const { setUserInfo } = useContext(UserContext);
   const { setActivePage } = useContext(ActivePageContext);
 
-  const handleLogin = () => {
-    if (PasswordText !== "" && loginText !== "") {
-      return new Promise((resolve, reject) => {
-        SendDataToLogin({
-          email: loginText,
-          password: PasswordText,
-        });
-      });
-    } else {
-      alert("wypełnij pola");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Wypełnij wszystkie pola!");
+      return;
     }
-  };
 
-  const SendDataToLogin = async (data) => {
-    await axios
-      .post(`http://localhost:5000/user/login`, data)
-      .then((response) => {
-        if (response.data.Success === "Loging succes!") {
-          setUserInfo(response.data.userdata);
-          setActivePage("JoinRoom");
-        } else {
-          alert(response.data.Success);
-        }
+    try {
+      const response = await axios.post("http://localhost:4000/user/login", {
+        email,
+        password,
       });
+
+      const data = response.data;
+
+      if (data.Success === "Loging succes!") {
+        // zapis do localStorage
+        localStorage.setItem("userInfo", JSON.stringify(data.userdata));
+
+        // ustawienie contextów
+        setUserInfo(data.userdata);
+        setActivePage("JoinRoom");
+      } else {
+        alert(data.Success);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Błąd sieci lub serwera. Spróbuj ponownie.");
+    }
   };
 
   return (
     <div className="join-room">
       <div className="login-form">
         <div className="flex-row">
-          <label className="lf--label" htmlFor="username">
-            <svg x="0px" y="0px" width="12px" height="13px"></svg>
-          </label>
+          <label className="lf--label" htmlFor="email"></label>
           <input
-            id="username"
+            id="email"
             className="lf--input"
-            placeholder="login"
+            placeholder="Email"
             type="text"
-            onChange={(e) => {
-              setLoginText(e.target.value);
-            }}
-          ></input>
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
+
         <div className="flex-row">
-          <label className="lf--label" htmlFor="password">
-            <svg x="0px" y="0px" width="15px" height="5px">
-              <g></g>
-            </svg>
-          </label>
+          <label className="lf--label" htmlFor="password"></label>
           <input
             id="password"
             className="lf--input"
-            placeholder="password"
+            placeholder="Hasło"
             type="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          ></input>
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
-        <button className="lf--submit" onClick={() => handleLogin()}>
+
+        <button className="lf--submit" onClick={handleLogin}>
           Login
         </button>
       </div>

@@ -17,15 +17,33 @@ import NavbarComponent from "./components/Navbar";
 import { SeachUserContext } from "./context/SeachUser";
 
 function App() {
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState(() => {
+    const savedUser = localStorage.getItem("userInfo");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [SeachUserInfo, setSeachUserInfo] = useState();
-  const [ActivePage, setActivePage] = useState();
+  const [ActivePage, setActivePage] = useState(() => {
+    const savedPage = localStorage.getItem("ActivePage");
+    return savedPage ? savedPage : null;
+  });
+  
+  // gdy zmienia się ActivePage, zapisujemy w localStorage
+  React.useEffect(() => {
+    if (ActivePage) {
+      localStorage.setItem("ActivePage", ActivePage);
+    }
+  }, [ActivePage]);
   const [results_array, setResults_array] = useState([]);
 
   function UnnlogUser(user) {
     try {
-      axios.put(`http://localhost:5000/user/logout`, { _id: user._id });
-    } catch (error) {}
+      axios.put(`http://localhost:4000/user/logout`, { _id: user._id });
+      localStorage.removeItem("userInfo"); // <--- usuwa zapis po logout
+      setUserInfo(null);
+      setActivePage(null);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function redirectToPage(page) {
@@ -41,11 +59,13 @@ function App() {
       case "ResultsPage":
         return <ResultsPage />;
       default:
-        <Login />;
+        return <Login />;
     }
   }
+  console.log("userInfo:", userInfo);
+console.log("ActivePage:", ActivePage);
   return (
-    <Beforeunload onBeforeunload={() => UnnlogUser(userInfo)}>
+    //<Beforeunload onBeforeunload={() => UnnlogUser(userInfo)}>
       <SeachUserContext.Provider value={{ SeachUserInfo, setSeachUserInfo }}>
         <UserContext.Provider value={{ userInfo, setUserInfo }}>
           <ActivePageContext.Provider value={{ ActivePage, setActivePage }}>
@@ -54,7 +74,7 @@ function App() {
                 <Switch>
                   <Route exact path="/">
                     <NavbarComponent />
-                    {userInfo ? redirectToPage(ActivePage) : <Login />}
+                    {userInfo  ? redirectToPage(ActivePage) : <Login />}
                   </Route>
                   <Route path="/register">
                     <NavbarComponent />
@@ -70,7 +90,7 @@ function App() {
           </ActivePageContext.Provider>
         </UserContext.Provider>
       </SeachUserContext.Provider>
-    </Beforeunload>
+    //</Beforeunload>
   );
 }
 
